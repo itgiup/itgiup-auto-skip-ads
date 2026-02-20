@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production && rm -rf itgiup-auto-skip-ads.zip && zip -r itgiup-auto-skip-ads.zip dist/",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist && rm -rf itgiup-auto-skip-ads.zip"
   },
   "dependencies": {
     "react": "^18.2.0",
