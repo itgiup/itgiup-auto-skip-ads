@@ -9,6 +9,7 @@ Chrome extension to automatically skip ads on videos with React, TypeScript, and
 - ⚙️ **Customizable Settings**: Configure skip delay and enable/disable features
 - 🎨 **Modern UI**: Built with React, TypeScript, and Ant Design
 - 📱 **Responsive Design**: Clean and user-friendly popup interface
+- 🌓 **Dark/Light Theme**: Support for system, light, and dark themes
 
 ## Architecture
 
@@ -39,6 +40,12 @@ src/
 - `_locales/en/messages.json`: English translations
 - `_locales/vi/messages.json`: Vietnamese translations
 - Chrome i18n API integration
+
+### Theme Support
+- System theme detection
+- Light theme option
+- Dark theme option
+- Ant Design dark algorithm for proper theming
 
 ## Development
 
