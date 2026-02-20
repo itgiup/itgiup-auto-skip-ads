@@ -1,0 +1,38 @@
+{
+  "extensionName": {
+    "message": "Автоматический пропуск рекламы",
+    "description": "Название расширения"
+  },
+  "extensionDescription": {
+    "message": "Автоматически пропускать рекламу в видео",
+    "description": "Описание расширения"
+  },
+  "settings": {
+    "message": "Настройки",
+    "description": "Пункт меню настроек"
+  },
+  "enable": {
+    "message": "Включить",
+    "description": "Включить переключатель"
+  },
+  "disable": {
+    "message": "Отключить",
+    "description": "Отключить переключатель"
+  },
+  "autoSkip": {
+    "message": "Автопропуск",
+    "description": "Функция автопропуска"
+  },
+  "skipDelay": {
+    "message": "Задержка пропуска (секунды)",
+    "description": "Настройка задержки пропуска"
+  },
+  "save": {
+    "message": "Сохранить",
+    "description": "Кнопка сохранения"
+  },
+  "cancel": {
+    "message": "Отмена",
+    "description": "Кнопка отмены"
+  }
+}

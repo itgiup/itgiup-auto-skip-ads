@@ -1,0 +1,38 @@
+{
+  "extensionName": {
+    "message": "自动跳过广告",
+    "description": "扩展名称"
+  },
+  "extensionDescription": {
+    "message": "自动跳过视频广告",
+    "description": "扩展描述"
+  },
+  "settings": {
+    "message": "设置",
+    "description": "设置菜单项"
+  },
+  "enable": {
+    "message": "启用",
+    "description": "启用开关"
+  },
+  "disable": {
+    "message": "禁用",
+    "description": "禁用开关"
+  },
+  "autoSkip": {
+    "message": "自动跳过",
+    "description": "自动跳过功能"
+  },
+  "skipDelay": {
+    "message": "跳过延迟（秒）",
+    "description": "跳过延迟设置"
+  },
+  "save": {
+    "message": "保存",
+    "description": "保存按钮"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "取消按钮"
+  }
+}

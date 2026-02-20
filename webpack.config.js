@@ -32,7 +32,36 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      'react': path.resolve(__dirname, 'node_modules/react'),
+      'react-dom': path.resolve(__dirname, 'node_modules/react-dom')
+    }
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+          minSize: 30000,
+          maxSize: 244000
+        },
+        antd: {
+          test: /[\\/]node_modules[\\/]antd[\\/]/,
+          name: 'antd',
+          chunks: 'all',
+          priority: 10
+        }
+      }
+    }
+  },
+  performance: {
+    maxAssetSize: 300000,
+    maxEntrypointSize: 300000,
+    hints: 'warning'
   },
   plugins: [
     new HtmlWebpackPlugin({

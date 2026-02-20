@@ -5,7 +5,8 @@ export type { ExtensionSettings };
 const DEFAULT_SETTINGS: ExtensionSettings = {
   enabled: true,
   skipDelay: 0,
-  autoSkip: true
+  autoSkip: true,
+  language: 'en'
 };
 
 export const getSettings = async (): Promise<ExtensionSettings> => {
