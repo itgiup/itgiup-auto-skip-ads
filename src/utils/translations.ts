@@ -12,7 +12,11 @@ export const translations = {
     english: "English",
     vietnamese: "Vietnamese",
     chinese: "Chinese",
-    russian: "Russian"
+    russian: "Russian",
+    theme: "Theme",
+    light: "Light",
+    dark: "Dark",
+    system: "System"
   },
   vi: {
     extensionName: "Tự Động Bỏ Qua Quảng Cáo",
@@ -27,7 +31,11 @@ export const translations = {
     english: "Tiếng Anh",
     vietnamese: "Tiếng Việt",
     chinese: "Tiếng Trung",
-    russian: "Tiếng Nga"
+    russian: "Tiếng Nga",
+    theme: "Chủ đề",
+    light: "Sáng",
+    dark: "Tối",
+    system: "Hệ thống"
   },
   zh: {
     extensionName: "自动跳过广告",
@@ -42,7 +50,11 @@ export const translations = {
     english: "英语",
     vietnamese: "越南语",
     chinese: "中文",
-    russian: "俄语"
+    russian: "俄语",
+    theme: "主题",
+    light: "浅色",
+    dark: "深色",
+    system: "系统"
   },
   ru: {
     extensionName: "Автоматический пропуск рекламы",
@@ -57,7 +69,11 @@ export const translations = {
     english: "Английский",
     vietnamese: "Вьетнамский",
     chinese: "Китайский",
-    russian: "Русский"
+    russian: "Русский",
+    theme: "Тема",
+    light: "Светлая",
+    dark: "Тёмная",
+    system: "Система"
   }
 };
 

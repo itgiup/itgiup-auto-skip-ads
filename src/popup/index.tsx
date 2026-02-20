@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ConfigProvider, Switch, InputNumber, Button, Space, Typography, Card, Select } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { ConfigProvider, Switch, InputNumber, Button, Space, Typography, Card, Select, Radio } from 'antd';
+import { SettingOutlined, BulbOutlined } from '@ant-design/icons';
 import { getSettings, saveSettings, ExtensionSettings } from '../utils/storage';
 import { getTranslation, Language } from '../utils/translations';
+import { getAntdTheme, applyTheme, getEffectiveTheme } from '../utils/theme';
 import enUS from 'antd/locale/en_US';
 import viVN from 'antd/locale/vi_VN';
 import zhCN from 'antd/locale/zh_CN';
@@ -17,13 +18,18 @@ const Popup: React.FC = () => {
     enabled: true,
     skipDelay: 0,
     autoSkip: true,
-    language: 'en'
+    language: 'en',
+    theme: 'system'
   });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadSettings();
   }, []);
+
+  useEffect(() => {
+    applyTheme(settings);
+  }, [settings.theme]);
 
   const loadSettings = async () => {
     try {
@@ -56,10 +62,23 @@ const Popup: React.FC = () => {
     }
   };
 
+  const getAntdThemeConfig = () => {
+    return getAntdTheme(settings);
+  };
+
   return (
-    <ConfigProvider locale={getAntdLocale()}>
-      <div style={{ padding: '16px', width: '320px', minHeight: '400px' }}>
-        <Card size="small" style={{ marginBottom: '16px' }}>
+    <ConfigProvider locale={getAntdLocale()} theme={getAntdThemeConfig()}>
+      <div style={{
+        padding: '16px',
+        minHeight: '450px',
+        backgroundColor: 'var(--popup-bg, #ffffff)',
+        color: 'var(--popup-text, #000000)'
+      }}>
+        <Card size="small" style={{
+          marginBottom: '16px',
+          backgroundColor: 'var(--card-bg, #ffffff)',
+          borderColor: 'var(--card-border, #d9d9d9)'
+        }}>
           <Space direction="vertical" style={{ width: '100%', alignItems: 'center' }}>
             <Title level={4} style={{ margin: 0, textAlign: 'center' }}>
               <SettingOutlined /> {t('settings')}
@@ -67,10 +86,14 @@ const Popup: React.FC = () => {
           </Space>
         </Card>
 
-        <Card size="small" style={{ marginBottom: '16px' }}>
+        <Card size="small" style={{
+          marginBottom: '16px',
+          backgroundColor: 'var(--card-bg, #ffffff)',
+          borderColor: 'var(--card-border, #d9d9d9)'
+        }}>
           <Space direction="vertical" style={{ width: '100%' }} size="middle">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-              <Text strong style={{ flex: 1 }}>🌍 {t('language')} 🌐</Text>
+              <Text strong style={{ flex: 1 }}>🌍 {t('language')}</Text>
               <Select
                 value={settings.language}
                 onChange={(value: Language) => setSettings({ ...settings, language: value })}
@@ -82,6 +105,20 @@ const Popup: React.FC = () => {
                 <Option value="zh">中文</Option>
                 <Option value="ru">Русский</Option>
               </Select>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+              <Text strong style={{ flex: 1 }}><BulbOutlined /> {t('theme')}</Text>
+              <Radio.Group
+                value={settings.theme}
+                onChange={(e) => setSettings({ ...settings, theme: e.target.value })}
+                size="small"
+                style={{ flexShrink: 0 }}
+              >
+                <Radio.Button value="light">{t('light')}</Radio.Button>
+                <Radio.Button value="dark">{t('dark')}</Radio.Button>
+                <Radio.Button value="system">{t('system')}</Radio.Button>
+              </Radio.Group>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>

@@ -3,7 +3,9 @@ import { ExtensionSettings } from '../utils/types';
 let currentSettings: ExtensionSettings = {
   enabled: true,
   skipDelay: 0,
-  autoSkip: true
+  autoSkip: true,
+  language: 'en',
+  theme: 'system'
 };
 
 const skipAd = () => {
