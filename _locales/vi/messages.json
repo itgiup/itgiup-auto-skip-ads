@@ -1,0 +1,38 @@
+{
+  "extensionName": {
+    "message": "Tự Động Bỏ Qua Quảng Cáo",
+    "description": "Tên của extension"
+  },
+  "extensionDescription": {
+    "message": "Tự động bỏ qua quảng cáo trên video",
+    "description": "Mô tả của extension"
+  },
+  "settings": {
+    "message": "Cài đặt",
+    "description": "Mục menu cài đặt"
+  },
+  "enable": {
+    "message": "Bật",
+    "description": "Nút bật"
+  },
+  "disable": {
+    "message": "Tắt",
+    "description": "Nút tắt"
+  },
+  "autoSkip": {
+    "message": "Tự Động Bỏ Qua",
+    "description": "Tính năng tự động bỏ qua"
+  },
+  "skipDelay": {
+    "message": "Độ Trễ Bỏ Qua (giây)",
+    "description": "Cài đặt độ trễ bỏ qua"
+  },
+  "save": {
+    "message": "Lưu",
+    "description": "Nút lưu"
+  },
+  "cancel": {
+    "message": "Hủy",
+    "description": "Nút hủy"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "extensionName": {
+    "message": "Auto Skip Ads",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Automatically skip ads on videos",
+    "description": "Description of the extension"
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "Settings menu item"
+  },
+  "enable": {
+    "message": "Enable",
+    "description": "Enable toggle"
+  },
+  "disable": {
+    "message": "Disable",
+    "description": "Disable toggle"
+  },
+  "autoSkip": {
+    "message": "Auto Skip",
+    "description": "Auto skip feature"
+  },
+  "skipDelay": {
+    "message": "Skip Delay (seconds)",
+    "description": "Skip delay setting"
+  },
+  "save": {
+    "message": "Save",
+    "description": "Save button"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Cancel button"
+  }
+}
