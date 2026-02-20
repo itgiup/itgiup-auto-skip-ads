@@ -4,7 +4,7 @@
   "description": "Chrome extension to auto skip ads",
   "scripts": {
     "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && rm -rf itgiup-auto-skip-ads.zip && zip -r itgiup-auto-skip-ads.zip dist/",
     "clean": "rm -rf dist"
   },
   "dependencies": {
