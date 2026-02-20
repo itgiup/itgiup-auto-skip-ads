@@ -1,4 +1,4 @@
-# ITGIUP Auto Skip Ads
+# Auto Skip Ads
 
 Chrome extension to automatically skip ads on videos with React, TypeScript, and Ant Design.
 
