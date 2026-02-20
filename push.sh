@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "Adding all changes to git..."
+echo -e "\033[33mAdding all changes to git...\033[0m"
 git add .
 
-echo "Committing changes..."
+echo -e "\033[33mCommitting changes...\033[0m"
 git commit -m "feat: implement dark/light theme support
 
 - Add theme selection with Light/Dark/System options
@@ -14,7 +14,7 @@ git commit -m "feat: implement dark/light theme support
 - Fix background color issues in dark mode
 - Ensure complete theme coverage for all UI elements"
 
-echo "Pushing to remote repository..."
+echo -e "\033[33mPushing to remote repository...\033[0m"
 git push
 
-echo "Done! Changes pushed successfully."
+echo -e "\033[32mDone! Changes pushed successfully.\033[0m"
