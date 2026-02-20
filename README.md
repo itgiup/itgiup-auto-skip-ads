@@ -1,0 +1,1 @@
+# itgiup-auto-skip-ads
