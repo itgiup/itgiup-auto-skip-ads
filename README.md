@@ -117,3 +117,62 @@ MIT License - feel free to use this project for your own extensions!
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+
+```html
+<button class="ytp-skip-ad-button ytp-ad-component--clickable" id="skip-button:i" style="">
+    <div class="ytp-skip-ad-button__text">Skip</div>
+    <span class="ytp-skip-ad-button__icon">
+        <svg fill="none" height="24" viewBox="0 0 24 24" width="24"><path d="M20 ..." fill="white"></path></svg>
+    </span>
+</button>
+```
+
+```javascript
+function findSkipButton() {
+  // Ưu tiên 1: Tìm theo class chính (ổn định nhất)
+  let btn = document.querySelector('.ytp-skip-ad-button');
+  
+  // Ưu tiên 2: Tìm theo pattern ID (nếu class không hoạt động)
+  if (!btn) {
+    btn = document.querySelector('[id^="skip-button:"].ytp-skip-ad-button');
+  }
+  
+  // Ưu tiên 3: Tìm trong Shadow DOM của player
+  if (!btn) {
+    const player = document.querySelector('#movie_player, ytd-player');
+    if (player?.shadowRoot) {
+      btn = player.shadowRoot.querySelector('.ytp-skip-ad-button');
+    }
+  }
+  
+  return btn;
+}
+
+const enterEvent = new KeyboardEvent('keydown', {
+    key: 'Enter',
+    code: 'Enter',
+    keyCode: 13,
+    which: 13,
+    bubbles: true // Quan trọng để sự kiện "nổi" lên các phần tử cha
+});
+const spaceEvent = new KeyboardEvent('keydown', {
+    key: ' ',
+    code: 'Space',
+    keyCode: 32,
+    which: 32,
+    bubbles: true // Quan trọng để sự kiện "nổi" lên các phần tử cha
+});
+
+// Cách dùng:
+const skipBtn = findSkipButton();
+if (skipBtn) {
+  console.log('Found skip button:', skipBtn);
+  skipBtn.focus();
+  // Thực hiện click...
+  skipBtn.dispatchEvent(spaceEvent);
+  skipBtn.dispatchEvent(enterEvent);
+  skipBtn.click();
+  console.log('Skip button clicked');
+}
+```

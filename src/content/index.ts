@@ -46,7 +46,7 @@ function forceClick(el: Element): boolean {
       (el as HTMLElement).click();
       console.log('Method 1: Direct click successful');
     }, 100);
-    // return true;
+    return true;
   } catch (e) {
     console.log('Method 1 failed:', e);
   }
@@ -64,7 +64,7 @@ function forceClick(el: Element): boolean {
       el.dispatchEvent(enterEvent);
       console.log('Method 2: Focus + Enter successful');
     }, 200);
-    // return true;
+    return true;
   } catch (e) {
     console.log('Method 2 failed:', e);
   }
@@ -105,7 +105,7 @@ function forceClick(el: Element): boolean {
         console.log('Method 3: Mouse event sequence successful');
       }, 50);
     }, 300);
-    // return true;
+    return true;
   } catch (e) {
     console.log('Method 3 failed:', e);
   }
@@ -126,76 +126,109 @@ function forceClick(el: Element): boolean {
       });
       console.log('Method 4: Event chain successful');
     }, 400);
-    console.log('Element:', el);
     return true;
   } catch (e) {
     console.log('Method 4 failed:', e);
   }
 
-
   console.log('All click methods attempted');
   return false;
 }
 
-// 4. Vòng lặp kiểm tra
-let checkInterval: NodeJS.Timeout;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'SETTINGS_UPDATED') {
+    currentSettings = message.settings;
+  }
+});
 
-const startAdDetection = () => {
-  // Tìm với nhiều selector dự phòng vì YouTube hay đổi tên class
+// 4. MutationObserver để bắt skip button ngay khi xuất hiện
+const observeSkipButton = () => {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length > 0) {
+        // Kiểm tra các node mới được thêm
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // Tìm skip button trong node mới
+            const selectors = [
+              '.ytp-skip-ad-button',
+              '.ytp-ad-skip-button',
+              'button.ytp-ad-skip-button',
+              'button[id*="skip-button"]'
+            ];
+
+            for (const selector of selectors) {
+              const btn = (node as Element).querySelector(selector);
+              if (btn && isElementReady(btn)) {
+                console.log('Skip button detected via MutationObserver:', selector);
+                forceClick(btn);
+                return; // Thoát ngay khi thành công
+              }
+            }
+
+            // Kiểm tra trong shadow DOM của node mới
+            if ((node as any).shadowRoot) {
+              for (const selector of selectors) {
+                const btn = queryShadow(selector, (node as any).shadowRoot);
+                if (btn && isElementReady(btn)) {
+                  console.log('Skip button detected in Shadow DOM via MutationObserver:', selector);
+                  forceClick(btn);
+                  return;
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+
+  // Theo dõi toàn bộ document
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class', 'id', 'style'] // Theo dõi thay đổi class/id/style
+  });
+
+  console.log('MutationObserver started for skip button detection');
+};
+
+// Fallback: Kiểm tra toàn bộ document (cho các trường hợp đặc biệt)
+const checkDocumentForSkipButton = () => {
   const selectors = [
     '.ytp-skip-ad-button',
     '.ytp-ad-skip-button',
-    'button.ytp-ad-skip-button'
+    'button.ytp-ad-skip-button',
+    'button[id*="skip-button"]'
   ];
 
   for (const selector of selectors) {
     const btn = queryShadow(selector);
     if (btn && isElementReady(btn)) {
+      console.log('Skip button found via document check:', selector);
       forceClick(btn);
-      return; // Thoát ngay khi thành công
+      return;
     }
   }
 };
 
-const skipAd = () => {
-  const skipButton = document.querySelector('.ytp-skip-ad-button');
-  if (skipButton && skipButton instanceof HTMLButtonElement) {
-    console.log('Skip button found:', skipButton);
-
-    if (currentSettings.skipDelay > 0) {
-      setTimeout(() => {
-        if (skipButton.isConnected) {
-          forceClick(skipButton);
-          console.log('Ad skipped after delay');
-        }
-      }, currentSettings.skipDelay * 1000);
-    } else {
-      forceClick(skipButton);
-      console.log('Ad skipped immediately');
-    }
-    return true;
-  }
-  return false;
-};
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'SETTINGS_UPDATED') {
-    currentSettings = message.settings;
-    console.log('Settings updated:', currentSettings);
-  }
-});
-
+// Start detection
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    startAdDetection();
+    observeSkipButton();
+    // Fallback interval (ít tốn tài nguyên hơn)
+    setInterval(() => {
+      if (currentSettings.enabled && currentSettings.autoSkip) {
+        checkDocumentForSkipButton();
+      }
+    }, 2000); // Chỉ kiểm tra mỗi 2 giây
   });
 } else {
-  startAdDetection();
+  observeSkipButton();
+  setInterval(() => {
+    if (currentSettings.enabled && currentSettings.autoSkip) {
+      checkDocumentForSkipButton();
+    }
+  }, 2000);
 }
-
-// Bắt đầu detection loop
-checkInterval = setInterval(() => {
-  if (currentSettings.enabled && currentSettings.autoSkip) {
-    startAdDetection();
-  }
-}, 500); // Kiểm tra mỗi 0.5 giây

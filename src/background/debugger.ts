@@ -1,50 +1,12 @@
-import { getSettings } from '../utils/storage';
-
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('Auto Skip Ads extension installed');
-});
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tab.url) {
-    handlePageLoad(tabId, tab.url);
-  }
-});
-
-const handlePageLoad = async (tabId: number, url: string) => {
-  try {
-    const settings = await getSettings();
-    if (settings.enabled) {
-      chrome.tabs.sendMessage(tabId, {
-        type: 'SETTINGS_UPDATED',
-        settings
-      });
-    }
-  } catch (error) {
-    console.error('Error handling page load:', error);
-  }
-};
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'GET_SETTINGS') {
-    getSettings().then(settings => {
-      sendResponse(settings);
-    });
-    return true;
-  }
-});
-
 // Chrome Debugger Protocol for trusted clicks
 chrome.action.onClicked.addListener(async (tab) => {
   if (!tab.id) return;
   
   const target = { tabId: tab.id };
-  let attached = false;
   
   try {
     // Attach debugger
     await chrome.debugger.attach(target, "1.3");
-    attached = true;
-    console.log('Debugger attached successfully');
     
     // Lấy vị trí nút Skip
     const [rect] = await chrome.scripting.executeScript({
@@ -54,7 +16,6 @@ chrome.action.onClicked.addListener(async (tab) => {
                    document.querySelector('.ytp-ad-skip-button') ||
                    document.querySelector('button[id*="skip-button"]');
         if (!btn) return null;
-        console.log('tìm thấy nút rồi :', btn);
         const r = btn.getBoundingClientRect();
         return { 
           x: Math.round(r.left + r.width/2), 
@@ -126,18 +87,11 @@ chrome.action.onClicked.addListener(async (tab) => {
   } catch (error) {
     console.error('Debugger error:', error);
   } finally {
-    // Chỉ detach khi đã attach thành công
-    if (attached) {
-      try {
-        await new Promise(resolve => setTimeout(resolve, 100)); // Wait before detach
-        await chrome.debugger.detach(target);
-        console.log('Debugger detached successfully');
-      } catch (e: any) {
-        // Ignore detach errors - chỉ log khi không phải "Not attached"
-        if (!e.message?.includes('Not attached')) {
-          console.log('Detach error (ignored):', e.message);
-        }
-      }
+    // Luôn detach để tránh ảnh hưởng trải nghiệm người dùng
+    try {
+      await chrome.debugger.detach(target);
+    } catch (e) {
+      // Ignore detach errors
     }
   }
 });

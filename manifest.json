@@ -6,6 +6,9 @@
   "default_locale": "en",
   "permissions": [
     "storage",
+    "debugger",
+    "scripting",
+    "tabs",
     "activeTab"
   ],
   "host_permissions": [
